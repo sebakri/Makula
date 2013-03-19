@@ -1,7 +1,7 @@
 #Makula#
 
 Makula (hopefully) will be a library for recognizing and learning complex shapes in "real time".
-It is mostly based on the Point Cloud Library (http://www.pointclouds.org). 
+It is mostly based on the Point Cloud Library (http://www.pointclouds.org) and the MRPT (http://www.mrpt.org). 
 Currently I am using the version 1.7.0 (trunk), because of its support for CUDA and GPUs. 
 
 ##Roadmap##
