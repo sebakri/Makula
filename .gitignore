@@ -14,3 +14,7 @@
 
 # Vim
 *.swp
+
+# KDE
+.kdev4
+*.kdev4
