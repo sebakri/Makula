@@ -22,10 +22,10 @@
 #ifndef CHANNEL_H
 #define CHANNEL_H
 
-#include "buffer.h"
+#include "makula/base/buffer.h"
 
 namespace makula {
-namespace core {
+namespace base {
 
 /**
 *	\brief A thread safe buffered channel.

@@ -18,13 +18,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "base/channel.h"
+#include "makula/base/channel.h"
 #include <gtest/gtest.h>
 #include <future>
 
-using namespace makula::core;
+using namespace makula::base;
 
-// Channel 
+// Channel
 class ChannelUnitTest : public ::testing::Test {
 protected:
      Channel<int>::Ptr c;
@@ -36,7 +36,7 @@ protected:
      {}
 
      virtual void SetUp() {
-          c = Channel<int>::Ptr ( new Channel<int>(100) );
+          c = Channel<int>::Ptr ( new Channel<int> ( 100 ) );
      }
 
      virtual void TearDown()
@@ -77,7 +77,7 @@ TEST_F ( ChannelUnitTest, SendWhenBufferIsFull )
      f.wait();
 
      // the capacity should be reached again.
-     EXPECT_EQ ( c->size(), c->capacity());
+     EXPECT_EQ ( c->size(), c->capacity() );
 }
 
 TEST_F ( ChannelUnitTest, ReadWhenBufferIsEmpty )

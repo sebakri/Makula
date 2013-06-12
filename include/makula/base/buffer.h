@@ -27,7 +27,7 @@
 #include <atomic>
 
 namespace makula {
-namespace core {
+namespace base {
 
 /**
 *	\brief A thread-safe buffer.

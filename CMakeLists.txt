@@ -6,6 +6,17 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 
 add_definitions(-std=c++11)
 
+find_package(TBB REQUIRED)
+
+if(TBB_FOUND)
+  include_directories(
+    ${TBB_INCLUDE_DIRS}
+  )
+
+  link_directories(${TBB_LIBRARY_DIRS})
+
+endif()
+
 if(BUILD_TESTS)
 
   include(GetGMock)
@@ -17,4 +28,7 @@ if(BUILD_TESTS)
   
 endif()
 
-add_subdirectory(core)
+include_directories(include)
+
+# add_subdirectory(core)
+add_subdirectory(test)

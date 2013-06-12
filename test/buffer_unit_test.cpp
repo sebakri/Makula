@@ -18,11 +18,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "base/buffer.h"
+#include "makula/base/buffer.h"
 #include <gtest/gtest.h>
 #include <future>
 
-using namespace makula::core;
+using namespace makula::base;
 
 class BufferUnitTest : public ::testing::Test {
 protected:
