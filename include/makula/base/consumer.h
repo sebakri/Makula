@@ -27,21 +27,42 @@
 namespace makula {
 namespace base {
 
-/// \brief This abstract class adds an input channel to its heirs.
+/**
+ * \brief Abstract class Consumer can receive data from a Producer.
+ *
+ * \param InputT type to receive
+ */
 template<typename InputT>
 class Consumer {
 public:
      virtual ~Consumer() {}
 
-     /** \brief set the input channel.
+     /**
+      * \brief set the input channel.
       * \param[in] ch channel pointer to set as input channel.
       */
      void setInputChannel ( typename Channel<InputT>::SharedPtr ch ) {
           chin = ch;
      }
-protected:
+private:
      typename Channel<InputT>::SharedPtr chin;
+protected:
+
+     /**
+      * \brief takes on data from channel.
+      * \param[in,out] data stores the read data.
+      * \return false if channel is not connected.
+      */
+     bool takeOn ( InputT& data ) {
+          if ( chin )
+               data = chin->read();
+          else
+               return false;
+
+          return true;
+     }
 };
+
 }
 }
 

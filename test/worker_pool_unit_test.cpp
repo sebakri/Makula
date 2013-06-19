@@ -23,29 +23,40 @@
 
 using namespace makula::base;
 
-class WorkerPoolImpl : public WorkerPool<const int&> {
-public:
-     WorkerPoolImpl() {}
-     ~WorkerPoolImpl() {}
-
-protected:
-     virtual int workerFunc ( const int& i ) {
-          int j = i;
-          j++;
-
-          return 0;
-     }
-};
+// class WorkerPoolImpl : public WorkerPool<const int&> {
+// public:
+//      WorkerPoolImpl() {}
+//      ~WorkerPoolImpl() {}
+// 
+// protected:
+//      virtual int workerFunc ( const int& i ) {
+//           int j = i;
+//           j++;
+// 
+//           return 0;
+//      }
+// };
 
 class WorkerPoolUnitTest : public ::testing::Test {
 protected:
      WorkerPoolUnitTest() {}
      ~WorkerPoolUnitTest() {}
 
-     WorkerPoolImpl::Ptr w;
+     WorkerPool<const int&>::Ptr w;
 
+     void response(const int& i)
+     {
+          int j = i;
+          j++;
+     }
+     
      virtual void SetUp() {
-          w = WorkerPoolImpl::Ptr ( new WorkerPoolImpl );
+          w = WorkerPool<const int&>::Ptr ( 
+          new WorkerPool<const int&>([this](const int& i)
+               {
+                    response(i);
+               })
+          );
      }
 
      virtual void TearDown() {
@@ -55,7 +66,7 @@ protected:
 
 TEST_F ( WorkerPoolUnitTest, createWorkerPool )
 {
-     WorkerPoolImpl w;
+     WorkerPool<const int&> w([this](const int& i){ response(i);});
 }
 
 TEST_F ( WorkerPoolUnitTest, startSomeWorkers )
@@ -63,7 +74,7 @@ TEST_F ( WorkerPoolUnitTest, startSomeWorkers )
      for ( int i = 0; i < 200; i++ ) {
           w->startWorker ( i );
      }
-
+     
      w->wait();
 
      EXPECT_EQ ( w->currentWorkerCount(), 0 );

@@ -25,34 +25,71 @@
 #include <atomic>
 #include <future>
 #include <vector>
+#include <functional>
+#include "channel.h"
 
 namespace makula {
 namespace base {
 
-/// \brief Abstract for defining a Workerpool.
+/**
+ * \brief WorkerPool can run a specific task asynchronously in seperate workers.
+ * \param Args Argmuments for the task to run.
+ */
 template<typename... Args>
 class WorkerPool {
 public:
+     /**
+      * \brief pointer type
+      */
      using Ptr = std::unique_ptr<WorkerPool<Args...> >;
 
-     WorkerPool ( uint maxWorkerCount = std::thread::hardware_concurrency() ) :
+     /**
+      * \brief shared pointer type
+      */
+     using SharedPtr = std::shared_ptr<WorkerPool<Args...> >;
+
+     /**
+      * \brief default constructor
+      */
+     WorkerPool ( const std::function<void ( Args... ) >& f, uint maxWorkerCount = std::thread::hardware_concurrency() ) :
+          workerFunction ( std::move ( f ) ),
           workerCounter ( 0 ),
           maxWorkerCount ( maxWorkerCount ) {
+     }
+
+     /**
+      * \brief move constructor
+      */
+     WorkerPool ( const WorkerPool& w ) :
+          workerFunction ( std::move ( w.workerFunction ) ),
+          workerCounter ( std::move ( w.workerCounter.load() ) ),
+          maxWorkerCount ( std::move ( w.maxWorkerCount.load() ) ) {
 
      }
 
+     /**
+      * \brief destructor
+      */
      virtual ~WorkerPool() {};
 
+     /**
+      * \brief get the current worker count
+      * \return number of current workers.
+      */
      uint currentWorkerCount() {
           return workerCounter;
      }
 
+     /**
+      * \brief start a new worker with specific arguments
+      */
      void startWorker ( Args... args ) {
           wait_for_free_slots();
 
           workerCounter++;
-          auto f = std::async ( std::launch::async, [this] ( Args... args ) {
-               workerFunc ( args... );
+          auto f = std::async ( std::launch::async, [this] ( Args... args1 ) {
+
+               workerFunction ( args1... );
 
                std::lock_guard<std::mutex> lock ( mtx );
                workerCounter--;
@@ -66,6 +103,9 @@ public:
                maxWorkersReached = true;
      }
 
+     /**
+      * wait until all workers finished
+      */
      void wait() {
           for ( auto& f : futures ) {
                f.wait();
@@ -74,6 +114,7 @@ public:
 
 
 private:
+     std::function<void ( Args... ) > workerFunction;
      std::vector<std::future<void> > futures;
      std::atomic_uint workerCounter;
      std::atomic_uint maxWorkerCount;
@@ -81,15 +122,13 @@ private:
      std::mutex mtx;
      std::condition_variable_any cv;
 
+
      void wait_for_free_slots() {
           while ( maxWorkersReached ) {
                std::unique_lock<std::mutex> lock ( mtx );
                cv.wait ( lock );
           }
      }
-
-protected:
-     virtual int workerFunc ( Args... args ) = 0;
 };
 
 }

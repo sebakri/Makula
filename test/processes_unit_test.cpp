@@ -20,7 +20,6 @@
 
 #include "makula/base/producer.h"
 #include "makula/base/consumer.h"
-#include <makula/base/pipe.h>
 #include <gtest/gtest.h>
 
 using namespace makula::base;
@@ -33,9 +32,9 @@ public:
 protected:
      bool quit;
 
-     virtual int taskFunc() override {
+     virtual int main() override {
           for ( int i = 0; i < 10; i++ ) {
-               chout->send ( i );
+               deliver ( i );
           }
           return 0;
      }
@@ -49,9 +48,9 @@ public:
 protected:
      bool quit;
 
-     virtual int taskFunc() override {
+     virtual int main() override {
           for ( int i = 0; i < 10; i++ ) {
-               int v = chin->read();
+               int v; takeOn(v);
           }
           return 0;
      }
@@ -65,25 +64,25 @@ public:
 protected:
      bool quit;
 
-     virtual int taskFunc() override {
+     virtual int main() override {
           for ( int i = 0; i < 10; i++ ) {
-               int v = chin->read();
+               int v; takeOn(v);
                if ( v != i + 10 )
                     return 1;
           }
           return 0;
      }
 };
-class PipeImpl : public Process, public Pipe<int, int> {
+class PipeImpl : public Process, public Producer<int>, public Consumer<int>{
 public:
      PipeImpl() {}
      ~PipeImpl() {};
 
-     virtual int taskFunc() override {
+     virtual int main() override {
           for ( int i = 0; i < 10; i++ ) {
-               int v = chin->read();
+               int v; takeOn(v);
                v += 10;
-               chout->send ( std::move ( v ) );
+               deliver(v);
           }
 
           return 0;

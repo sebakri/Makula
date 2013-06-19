@@ -17,6 +17,9 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
+/**
+ * \example example_process.cpp
+ */
 
 #ifndef PROCESS_H
 #define PROCESS_H
@@ -28,27 +31,40 @@
 namespace makula {
 namespace base {
 
-/// \brief This abstract class defines a Process.
+/**
+ * \brief Abstract class to define a Process. Runs it's main-method asynchron.
+ */
 class Process {
 public:
      virtual ~Process() {}
 
+     /**
+      * \brief start runing the main-method.
+      */
      void execute() {
           fut = std::async ( std::launch::async, [this] {
-               int retValue = std::move ( taskFunc() );
+               int retValue = std::move ( main() );
 
                return std::move ( retValue );
           } );
      }
 
+     /**
+      * \brief is waiting until main-method is finished.
+      * \return return-value of the main-mehtod.
+      */
      int wait_until_finished() {
+          fut.wait();
           return fut.get();
      }
 
-protected:
+private:
      std::future<int> fut;
-
-     virtual int taskFunc() = 0;
+protected:
+     /**
+      * \brief main-method to implement. Will executed asynchonous.
+      */
+     virtual int main() = 0;
 };
 
 }

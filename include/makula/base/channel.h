@@ -17,7 +17,9 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-
+/**
+ * \example example_channel.cpp
+ */
 
 #ifndef CHANNEL_H
 #define CHANNEL_H
@@ -28,45 +30,57 @@ namespace makula {
 namespace base {
 
 /**
-*	\brief A thread safe buffered channel.
-*/
+ * \brief A concurrent, buffered Channel. Easily exchange data between threads.
+ *
+ * \param MessageType Type to store in Channel.
+ */
 template<typename MessageType>
 class Channel {
 public:
-     /// \brief point type
+     /**
+      * \brief pointer type
+      */
      using Ptr = std::unique_ptr<Channel<MessageType> >;
-     /// \brief shared point type
+     /**
+      * \brief shared point type
+      */
      using SharedPtr = std::shared_ptr<Channel<MessageType> >;
 
-     /// \brief default constructor
+     /**
+      * \brief default constructor
+      */
      Channel ( uint maxElementCount = 1 ) :
           maxElementCount ( maxElementCount ),
           buffer ( maxElementCount ) {
 
      }
 
-     /// \brief destructor
+     /**
+      * \brief destructor
+      */
      ~Channel() {
-
-     }
-
-     /// \brief move constructor
-     Channel ( const Channel<MessageType>&& c ) {
-          this->buffer = std::move ( c.buffer );
+          stop();
      }
 
      /**
-     *	\brief operator for sending data.
-     *	\param[in] in data to send.
-     */
+      * \brief move constructor
+      */
+     Channel ( const Channel<MessageType>&& c ) :
+          buffer ( std::move ( c.buffer ) ) {
+     }
+
+     /**
+      * \brief operator for sending data.
+      * \param[in] data data to send.
+      */
      void operator<< ( const MessageType& data ) {
           send ( data );
      }
 
      /**
-     *	\brief operator for reading data.
-     *	\param[out] out variable to store data.
-     */
+      * \brief operator for reading data.
+      * \param[out] data variable to store data.
+      */
      void operator>> ( MessageType& data ) {
           data = std::move ( read() );
      }
@@ -76,7 +90,11 @@ public:
       * \return next data from channel.
       */
      MessageType read() {
-          return std::move ( buffer.pop() );
+          MessageType m;
+
+          m = buffer.pop();
+
+          return std::move ( m );
      }
 
      /**
@@ -88,9 +106,9 @@ public:
      }
 
      /**
-     *	\brief get current element count.
-     *	\return element count.
-     */
+      * \brief get current element count.
+      * \return element count.
+      */
      uint size() {
           return buffer.size();
      }
@@ -103,9 +121,22 @@ public:
           return buffer.capacity();
      }
 
-
+     /**
+      * \brief cancels all operations.
+      */
+     void stop() {
+          buffer.abort();
+     }
 protected:
+
+     /**
+      * \brief the buffer stores the data.
+      */
      Buffer<MessageType> buffer;
+
+     /**
+      * \brief holds the element count.
+      */
      std::atomic_uint maxElementCount;
 };
 

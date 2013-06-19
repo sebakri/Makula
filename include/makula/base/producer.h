@@ -21,26 +21,47 @@
 #ifndef PRODUCER_H
 #define PRODUCER_H
 
-#include "makula/base/process.h"
+#include "channel.h"
 
 namespace makula {
-namespace core {
+namespace base {
 
-/// \brief Abstract class to define a Producer.
+/**
+ * \brief Abstract class to define a Producer. A Producer can send data to a Consumer over an channel
+ * \param OutputT type to send.
+ */
 template<typename OutputT>
 class Producer {
 public:
      virtual ~Producer() {}
 
-     /** \brief set the output channel.
+     /**
+      * \brief set the output channel.
       * \param[in] c channel pointer to set as output channel.
-     */
+      */
      void setOutputChannel ( typename Channel<OutputT>::SharedPtr c ) {
           chout = c;
      }
 protected:
+
+     /**
+      * \brief send data to connected Consumer
+      * \param[in] data data to send.
+      * \return false if Producer is not connected.
+      */
+     bool deliver ( const OutputT& data ) {
+          if ( chout )
+               chout->send ( data );
+          else
+               return false;
+
+          return true;
+     }
+
+private:
      typename Channel<OutputT>::SharedPtr chout;
 };
+
 }
 }
 

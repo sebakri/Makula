@@ -28,6 +28,7 @@ class BufferUnitTest : public ::testing::Test {
 protected:
 
      Buffer<int>::Ptr b;
+     
 
      BufferUnitTest()
      {}

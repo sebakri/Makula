@@ -22,6 +22,5 @@ Makefile
 cmake_install.cmake
 install_manifest.txt
 
-###Sublime###
-
-*.sublime*
+###KDevelop###
+*.kdev4

@@ -14,9 +14,9 @@ ExternalProject_Add(
     # Disable install step
     INSTALL_COMMAND ""
     # Wrap download, configure and build steps in a script to log output
-    LOG_DOWNLOAD ON
-    LOG_CONFIGURE ON
-    LOG_BUILD ON)
+    LOG_DOWNLOAD OFF
+    LOG_CONFIGURE OFF
+    LOG_BUILD OFF)
  
 # Specify include dir for googlemock and googletest
 ExternalProject_Get_Property(googlemock source_dir)

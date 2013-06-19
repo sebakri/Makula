@@ -72,6 +72,7 @@ TEST_F ( ChannelUnitTest, SendWhenBufferIsFull )
 
      // reading data from channel, so the waiting thread can continue.
      c->read();
+     
 
      // wait for the the sending thread is finished.
      f.wait();
