@@ -1,16 +1,39 @@
 #Makula#
 
-Makula (hopefully) will be a library for recognizing and learning complex shapes in "real time".
-It is mostly based on the Point Cloud Library (http://www.pointclouds.org) and the MRPT (http://www.mrpt.org). 
-Currently I am using the version 1.7.0 (trunk), because of its support for CUDA and GPUs. 
+At the beginning Makula was planned as an object-recognition framework. Finally it becomes a
+High-Level Library for task-based parallel programming.
 
-##Roadmap##
+## Base ##
 
-- [ ] **Give me eyes:** Buffered streaming of point clouds. The current OpenNI grabber takes me a bit to much CPU.
-- [ ] **Divide and Conquer:** Segmentation of a point cloud and not losing sight of "real time".
-- [ ] **Knowledgebase:** Store segmented objects and its characteristics(local features, keypoints) in a database.
-- [ ] **Learn to forget:** Keep memory clean. Delete bad records, when they seem useless.
-- [ ] **I spy with my little eye...:** Recognize already learned objects.
+The Base contains the following parts:
+
+- [x] a concurrent buffer for writing and reading data from multiple threads.
+- [x] a concurrent channel for communicating between threads.
+- [x] multiple abstract classes to define process and how they communicate with eachother.
+- [x] a workerpool for a higher throughput.
+
+## Requirements ##
+
+- Clone the latest PCL and install it.
+
+> git clone https://github.com/PointCloudLibrary/pcl.git
+
+## How to build ##
+
+- Clone it from Github
+
+> git clone https://github.com/Seppone/Makula.git
+
+- Build it!
+
+> mkdir build
+> cd build
+> cmake ..
+> make && make run_makula_tests
+
+- THIS STEP REQUIRES DOXYGEN AND GRAPHVIZ. If you want some documentation, then run
+
+> make doc
 
 ## Copyright ##
 
