@@ -65,7 +65,10 @@ public:
       * \brief destructor
       */
      ~Buffer() {
-          queue.abort();
+          try {
+               queue.abort();
+          } catch ( tbb::user_abort &e ) {
+          }
      }
 
      /**
@@ -129,6 +132,10 @@ public:
       */
      void abort() {
           queue.abort();
+     }
+     
+     void setCapacity(const uint& capacity) {
+          queue.set_capacity(capacity);
      }
 
 protected:

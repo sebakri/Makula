@@ -22,8 +22,8 @@ endif()
 
 
 set(MAKULA_LIBRARIES)
-set(TBB_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/3rdparty/TBB/include/)
-set(TBB_LIBRARY_DIRS ${CMAKE_SOURCE_DIR}/3rdparty/TBB/lib/intel64/gcc4.4/)
+set(TBB_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/3rdparty/tbb/include/)
+set(TBB_LIBRARY_DIRS ${CMAKE_SOURCE_DIR}/3rdparty/tbb/lib/intel64/gcc4.4/)
 
 include_directories(
   ${TBB_INCLUDE_DIRS}
@@ -32,7 +32,7 @@ include_directories(
 link_directories(${TBB_LIBRARY_DIRS})
 
 find_library(TBB_LIBRARIES
-  NAMES tbb tbbmalloc
+  NAMES tbb
   PATHS ${TBB_LIBRARY_DIRS}
 )
 
@@ -42,22 +42,31 @@ include_directories(include)
 
 if(BUILD_TESTS)
 
-  include(GetGMock)
+  find_package(GMock)
   
-  include_directories(${GMOCK_INCLUDE_DIRS})
-  link_directories(${GMOCK_LIB_DIRS})
+  if(GMOCK_FOUND)
+    include_directories(${GMOCK_INCLUDE_DIRS})
+    link_directories(${GMOCK_LIBRARY_DIRS})
   
-  enable_testing()
+    enable_testing()
   
-  
-  
-  add_custom_target(run_makula_tests
-    COMMAND ctest -V
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-  )
-  add_subdirectory(test)
-  
+    add_custom_target(run_makula_tests
+      COMMAND ctest -V
+      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
+    add_subdirectory(test)
+  endif()
 endif()
 
 add_subdirectory(src)
 add_subdirectory(examples)
+
+install(
+  FILES "${CMAKE_SOURCE_DIR}/include/makula/base/*.h"
+  DESTINATION /include/makula/base/
+)
+
+install(
+  FILES "${CMAKE_SOURCE_DIR}/include/makula/recognition/*.h"
+  DESTINATION /include/makula/recognition
+)

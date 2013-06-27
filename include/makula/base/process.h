@@ -54,10 +54,16 @@ public:
       * \return return-value of the main-mehtod.
       */
      int wait_until_finished() {
-          fut.wait();
-          return fut.get();
+          try {
+               fut.wait();
+               return fut.get();
+          } catch ( tbb::user_abort &e ) {
+               return 0;
+          } catch ( std::future_error &e ) {
+               return -1;
+          }
      }
-
+     
 private:
      std::future<int> fut;
 protected:

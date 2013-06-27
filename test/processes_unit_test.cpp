@@ -20,6 +20,7 @@
 
 #include "makula/base/producer.h"
 #include "makula/base/consumer.h"
+#include "makula/base/process.h"
 #include <gtest/gtest.h>
 
 using namespace makula::base;

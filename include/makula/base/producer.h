@@ -42,6 +42,10 @@ public:
      void setOutputChannel ( typename Channel<OutputT>::SharedPtr c ) {
           chout = c;
      }
+     
+     typename Channel<OutputT>::SharedPtr getOutputChannel() {
+          return chout;
+     }
 protected:
 
      /**
@@ -56,6 +60,17 @@ protected:
                return false;
 
           return true;
+     }
+     
+     /**
+      * \brief stops producing data.
+      */
+     void stopProducing()
+     {
+          if(chout)
+               chout->stop();
+          
+          chout.reset();
      }
 
 private:
