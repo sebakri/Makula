@@ -36,6 +36,11 @@ namespace base {
  */
 class Process {
 public:
+     /**
+      * \brief shared pointer type
+      */
+     using Ptr = std::shared_ptr<Process>;
+     
      virtual ~Process() {}
 
      /**
@@ -51,22 +56,30 @@ public:
 
      /**
       * \brief is waiting until main-method is finished.
-      * \return return-value of the main-mehtod.
       */
-     int wait_until_finished() {
-          try {
-               fut.wait();
-               return fut.get();
-          } catch ( tbb::user_abort &e ) {
-               return 0;
-          } catch ( std::future_error &e ) {
-               return -1;
-          }
+     void wait_until_finished() {
+          fut.wait();
+     }
+
+     /**
+      * \brief get return value
+      * \return return value of the process.
+      */
+     const int get() {
+          return fut.get();
      }
      
-private:
-     std::future<int> fut;
+     /**
+      * \brief exit-method to implement.
+      */
+     virtual void exit() = 0;
+
 protected:
+     /**
+      * \brief future for storing the return value of main-method.
+      */
+     std::future<int> fut;
+     
      /**
       * \brief main-method to implement. Will executed asynchonous.
       */

@@ -39,6 +39,8 @@ protected:
           }
           return 0;
      }
+     
+     virtual void exit() {}
 };
 
 class Consumer1Impl : public Process, public Consumer<int> {
@@ -55,6 +57,8 @@ protected:
           }
           return 0;
      }
+     
+     virtual void exit() {}
 };
 
 class Consumer2Impl : public Process, public Consumer<int> {
@@ -73,6 +77,8 @@ protected:
           }
           return 0;
      }
+     
+     virtual void exit() {}
 };
 class PipeImpl : public Process, public Producer<int>, public Consumer<int>{
 public:
@@ -88,6 +94,8 @@ public:
 
           return 0;
      }
+     
+     virtual void exit() {}
 };
 
 template<typename T>
@@ -122,8 +130,8 @@ TEST_F ( ProcessUnitTest, testProducerConsumer )
      p.execute();
      c.execute();
 
-     EXPECT_EQ ( p.wait_until_finished(), 0 );
-     EXPECT_EQ ( c.wait_until_finished(), 0 );
+     p.wait_until_finished();
+     c.wait_until_finished();
 }
 
 TEST_F ( ProcessUnitTest, testProducerConsumerOverPipe )
@@ -139,7 +147,7 @@ TEST_F ( ProcessUnitTest, testProducerConsumerOverPipe )
      c.execute();
      pipe.execute();
 
-     EXPECT_EQ ( p.wait_until_finished(), 0 );
-     EXPECT_EQ ( c.wait_until_finished(), 0 );
-     EXPECT_EQ ( pipe.wait_until_finished(), 0 );
+     p.wait_until_finished();
+     c.wait_until_finished();
+     pipe.wait_until_finished();
 }

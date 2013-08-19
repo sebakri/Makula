@@ -7,3 +7,9 @@ target_link_libraries(makula_example_channel ${MAKULA_LIBRARIES})
 
 add_executable(makula_example_process example_process.cpp)
 target_link_libraries(makula_example_process ${MAKULA_LIBRARIES})
+
+add_executable(makula_example_process_simple example_process_simple.cpp)
+target_link_libraries(makula_example_process_simple ${MAKULA_LIBRARIES})
+
+add_executable(makula_example_worker_pool example_worker_pool.cpp)
+target_link_libraries(makula_example_worker_pool ${MAKULA_LIBRARIES})

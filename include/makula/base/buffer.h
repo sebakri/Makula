@@ -68,6 +68,7 @@ public:
           try {
                queue.abort();
           } catch ( tbb::user_abort &e ) {
+
           }
      }
 
@@ -89,25 +90,33 @@ public:
       * \brief push an element to the buffer.
       * \param element element to push.
       */
-     void push ( const T& element ) {
-          queue.push ( element );
+     const bool push ( const T& element ) {
+          try {
+               queue.push ( element );
+               return true;
+          } catch ( tbb::user_abort &e ) {
+               return false;
+          }
      }
 
      /**
       * \brief pop the next element from buffer.
-      * \return element of type T.
+      * \param[in,out] element of type T.
       */
-     T pop() {
-          T element;
-          queue.pop ( element );
-          return std::move ( element );
+     const bool pop ( T& element ) {
+          try {
+               queue.pop ( element );
+               return true;
+          } catch ( tbb::user_abort &e ) {
+               return false;
+          }
      }
 
      /**
       * \brief get the max count of elements.
       * \return max count of elements.
       */
-     uint capacity() {
+     const uint capacity() {
           return queue.capacity();
      }
 
@@ -115,7 +124,7 @@ public:
       * \brief get the current element count.
       * \return current element count.
      */
-     uint size() {
+     const uint size() {
           return queue.size();
      }
 
@@ -123,7 +132,7 @@ public:
       * \brief check if buffer is empty
       * \return true if empty.
       */
-     bool empty() const {
+     const bool empty() const {
           return queue.empty();
      }
 
@@ -133,9 +142,13 @@ public:
      void abort() {
           queue.abort();
      }
-     
-     void setCapacity(const uint& capacity) {
-          queue.set_capacity(capacity);
+
+     /**
+      * \brief set the capacity of the buffer
+      * \param[in] capacity the new capacity
+      */
+     void setCapacity ( const uint& capacity ) {
+          queue.set_capacity ( capacity );
      }
 
 protected:

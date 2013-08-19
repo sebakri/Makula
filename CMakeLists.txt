@@ -3,12 +3,13 @@ project(Makula)
 cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
+# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 
 add_definitions(-std=c++11)
 
 find_package(Doxygen)
+find_package(PCL 1.7 REQUIRED)
 
 if(DOXYGEN_FOUND)
   configure_file(${CMAKE_SOURCE_DIR}/Doxyfile.in ${CMAKE_BINARY_DIR}/Doxyfile @ONLY)
@@ -38,7 +39,10 @@ find_library(TBB_LIBRARIES
 
 list(APPEND MAKULA_LIBRARIES ${TBB_LIBRARIES})
 
-include_directories(include)
+include_directories(
+  include
+  ${PCL_INCLUDE_DIRS}
+)
 
 if(BUILD_TESTS)
 
@@ -69,4 +73,9 @@ install(
 install(
   FILES "${CMAKE_SOURCE_DIR}/include/makula/recognition/*.h"
   DESTINATION /include/makula/recognition
+)
+
+install(
+  FILES "${CMAKE_SOURCE_DIR}/include/makula/recognition/pcl/*.h"
+  DESTINATION /include/makula/recognition/pcl
 )

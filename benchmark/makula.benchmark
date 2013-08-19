@@ -1,0 +1,41 @@
+Starte Benchmark: ./build/src/recognition/pcl/makula_recognition_pcl_benchmark test.pcd
+1.Messung für 20 Sekunden: 9 Objekte erkannt
+2.Messung für 20 Sekunden: 11 Objekte erkannt
+3.Messung für 20 Sekunden: 13 Objekte erkannt
+4.Messung für 20 Sekunden: 14 Objekte erkannt
+5.Messung für 20 Sekunden: 13 Objekte erkannt
+Durchschnittliche Erkennungen(Median) von 13 in 20 Sekunden
+Erkennungsrate von 0.65 pro Sekunde
+------------------------------------------------------------------------------------
+1.Messung für 40 Sekunden: 28 Objekte erkannt
+2.Messung für 40 Sekunden: 28 Objekte erkannt
+3.Messung für 40 Sekunden: 28 Objekte erkannt
+4.Messung für 40 Sekunden: 28 Objekte erkannt
+5.Messung für 40 Sekunden: 28 Objekte erkannt
+Durchschnittliche Erkennungen(Median) von 28 in 40 Sekunden
+Erkennungsrate von 0.7 pro Sekunde
+------------------------------------------------------------------------------------
+1.Messung für 60 Sekunden: 44 Objekte erkannt
+2.Messung für 60 Sekunden: 43 Objekte erkannt
+3.Messung für 60 Sekunden: 44 Objekte erkannt
+4.Messung für 60 Sekunden: 44 Objekte erkannt
+5.Messung für 60 Sekunden: 44 Objekte erkannt
+Durchschnittliche Erkennungen(Median) von 44 in 60 Sekunden
+Erkennungsrate von 0.7333333333333333 pro Sekunde
+------------------------------------------------------------------------------------
+1.Messung für 90 Sekunden: 68 Objekte erkannt
+2.Messung für 90 Sekunden: 68 Objekte erkannt
+3.Messung für 90 Sekunden: 68 Objekte erkannt
+4.Messung für 90 Sekunden: 68 Objekte erkannt
+5.Messung für 90 Sekunden: 68 Objekte erkannt
+Durchschnittliche Erkennungen(Median) von 68 in 90 Sekunden
+Erkennungsrate von 0.7555555555555555 pro Sekunde
+------------------------------------------------------------------------------------
+1.Messung für 120 Sekunden: 92 Objekte erkannt
+2.Messung für 120 Sekunden: 92 Objekte erkannt
+3.Messung für 120 Sekunden: 91 Objekte erkannt
+4.Messung für 120 Sekunden: 92 Objekte erkannt
+5.Messung für 120 Sekunden: 92 Objekte erkannt
+Durchschnittliche Erkennungen(Median) von 92 in 120 Sekunden
+Erkennungsrate von 0.7666666666666667 pro Sekunde
+------------------------------------------------------------------------------------

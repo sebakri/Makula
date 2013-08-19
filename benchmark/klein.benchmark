@@ -1,0 +1,41 @@
+Starte Benchmark: ./object_recognition
+1.Messung für 20 Sekunden: 3 Objekte erkannt
+2.Messung für 20 Sekunden: 3 Objekte erkannt
+3.Messung für 20 Sekunden: 5 Objekte erkannt
+4.Messung für 20 Sekunden: 5 Objekte erkannt
+5.Messung für 20 Sekunden: 5 Objekte erkannt
+Durchschnittliche Erkennungen(Median) von 5 in 20 Sekunden
+Erkennungsrate von 0.25 pro Sekunde
+------------------------------------------------------------------------------------
+1.Messung für 40 Sekunden: 16 Objekte erkannt
+2.Messung für 40 Sekunden: 15 Objekte erkannt
+3.Messung für 40 Sekunden: 19 Objekte erkannt
+4.Messung für 40 Sekunden: 18 Objekte erkannt
+5.Messung für 40 Sekunden: 15 Objekte erkannt
+Durchschnittliche Erkennungen(Median) von 16 in 40 Sekunden
+Erkennungsrate von 0.4 pro Sekunde
+------------------------------------------------------------------------------------
+1.Messung für 60 Sekunden: 26 Objekte erkannt
+2.Messung für 60 Sekunden: 24 Objekte erkannt
+3.Messung für 60 Sekunden: 25 Objekte erkannt
+4.Messung für 60 Sekunden: 25 Objekte erkannt
+5.Messung für 60 Sekunden: 24 Objekte erkannt
+Durchschnittliche Erkennungen(Median) von 25 in 60 Sekunden
+Erkennungsrate von 0.4166666666666667 pro Sekunde
+------------------------------------------------------------------------------------
+1.Messung für 90 Sekunden: 38 Objekte erkannt
+2.Messung für 90 Sekunden: 37 Objekte erkannt
+3.Messung für 90 Sekunden: 37 Objekte erkannt
+4.Messung für 90 Sekunden: 37 Objekte erkannt
+5.Messung für 90 Sekunden: 37 Objekte erkannt
+Durchschnittliche Erkennungen(Median) von 37 in 90 Sekunden
+Erkennungsrate von 0.4111111111111111 pro Sekunde
+------------------------------------------------------------------------------------
+1.Messung für 120 Sekunden: 45 Objekte erkannt
+2.Messung für 120 Sekunden: 49 Objekte erkannt
+3.Messung für 120 Sekunden: 48 Objekte erkannt
+4.Messung für 120 Sekunden: 44 Objekte erkannt
+5.Messung für 120 Sekunden: 48 Objekte erkannt
+Durchschnittliche Erkennungen(Median) von 48 in 120 Sekunden
+Erkennungsrate von 0.4 pro Sekunde
+------------------------------------------------------------------------------------

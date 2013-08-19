@@ -26,7 +26,7 @@ int main(int argc, char** argv)
      auto f2 = std::async(std::launch::async, [&b] {
         for(int i = 0; i < 20; i++)
         {
-             int v = b.pop();
+             int v; b.pop(v);
         }
      });
      
@@ -36,7 +36,7 @@ int main(int argc, char** argv)
      auto f3 = std::async(std::launch::async, [&b] {
         for(int i = 0; i < 20; i++)
         {
-             int v = b.pop();
+             int v; b.pop(v);
         }
      });
      

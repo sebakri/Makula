@@ -21,7 +21,7 @@
 #ifndef PRODUCER_H
 #define PRODUCER_H
 
-#include "channel.h"
+#include <makula/base/channel.h>
 
 namespace makula {
 namespace base {
@@ -42,8 +42,12 @@ public:
      void setOutputChannel ( typename Channel<OutputT>::SharedPtr c ) {
           chout = c;
      }
-     
-     typename Channel<OutputT>::SharedPtr getOutputChannel() {
+
+     /**
+      * \brief get the output channel.
+      * \return a const pointer to the output channel.
+      */
+     const typename Channel<OutputT>::Ptr getOutputChannel() {
           return chout;
      }
 protected:
@@ -53,23 +57,20 @@ protected:
       * \param[in] data data to send.
       * \return false if Producer is not connected.
       */
-     bool deliver ( const OutputT& data ) {
+     const bool deliver ( const OutputT& data ) {
           if ( chout )
-               chout->send ( data );
+               return chout->send ( data );
           else
                return false;
-
-          return true;
      }
-     
+
      /**
       * \brief stops producing data.
       */
-     void stopProducing()
-     {
-          if(chout)
+     void stopProducing() {
+          if ( chout )
                chout->stop();
-          
+
           chout.reset();
      }
 

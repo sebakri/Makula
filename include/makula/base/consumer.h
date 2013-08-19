@@ -21,7 +21,7 @@
 #ifndef CONSUMER_H
 #define CONSUMER_H
 
-#include "makula/base/channel.h"
+#include <makula/base/channel.h>
 
 namespace makula {
 namespace base {
@@ -43,37 +43,38 @@ public:
      void setInputChannel ( typename Channel<InputT>::SharedPtr ch ) {
           chin = ch;
      }
-     
-     typename Channel<InputT>::SharedPtr getInputChannel() {
-          return chin;
+
+     /**
+      * \brief get the input channel.
+      * \return const pointer to the input channel.
+      */
+     const typename Channel<InputT>::Ptr getInputChannel() {
+          return Channel<InputT>::Ptr ( chin );
      }
-     
+
 private:
      typename Channel<InputT>::SharedPtr chin;
 protected:
      /**
       * \brief stops consuming if channel is waiting.
       */
-     void stopConsuming()
-     {
-          if(chin)
+     void stopConsuming() {
+          if ( chin )
                chin->stop();
-          
+
           chin.reset();
      }
-     
+
      /**
       * \brief takes on data from channel.
       * \param[in,out] data stores the read data.
       * \return false if channel is not connected.
       */
-     bool takeOn ( InputT& data ) {
-          if ( chin )
-               data = chin->read();
-          else
+     const bool takeOn ( InputT& data ) {
+          if ( chin ) {
+               return chin->read(data);
+          } else
                return false;
-
-          return true;
      }
 };
 

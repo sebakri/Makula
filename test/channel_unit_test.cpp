@@ -51,7 +51,8 @@ TEST_F ( ChannelUnitTest, CreateNewChannel )
 TEST_F ( ChannelUnitTest, SendAndRead )
 {
      c->send ( 5 );
-     int i = c->read();
+     int i;
+     EXPECT_EQ(c->read(i), true);
      EXPECT_EQ ( i,5 );
 }
 
@@ -71,7 +72,9 @@ TEST_F ( ChannelUnitTest, SendWhenBufferIsFull )
      EXPECT_EQ ( c->size(), c->capacity() );
 
      // reading data from channel, so the waiting thread can continue.
-     c->read();
+     int i;
+     
+     EXPECT_EQ(c->read(i), true);
      
 
      // wait for the the sending thread is finished.
@@ -84,7 +87,9 @@ TEST_F ( ChannelUnitTest, SendWhenBufferIsFull )
 TEST_F ( ChannelUnitTest, ReadWhenBufferIsEmpty )
 {
      auto f = std::async ( std::launch::async, [this] {
-          return c->read();
+          int i;
+          EXPECT_EQ(c->read(i), true);
+          return i;
      } );
 
      c->send ( 42 );
@@ -104,7 +109,9 @@ TEST_F ( ChannelUnitTest, IsItThreadSafe )
 
      auto f2 =  std::async ( std::launch::async, [this]() {
           for ( int i = 0; i < c->capacity(); i++ ) {
-               int v = c->read();
+               int v;
+               
+               EXPECT_EQ(c->read(v), true);
           }
           return 0;
      } );

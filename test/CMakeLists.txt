@@ -7,11 +7,11 @@ set(test_core_srcs
 )
 
 add_definitions(-fprofile-arcs -ftest-coverage)
-add_executable(core_tests ${test_core_srcs})
+add_executable(base_tests ${test_core_srcs})
 
-target_link_libraries(core_tests ${GMOCK_LIBRARIES} pthread ${TBB_LIBRARIES} ${PCL_LIBRARIES} -fprofile-arcs)
+target_link_libraries(base_tests ${GMOCK_LIBRARIES} pthread ${TBB_LIBRARIES} ${PCL_LIBRARIES} -fprofile-arcs)
 
 add_test(
-  NAME testingCore
-  COMMAND core_tests
+  NAME testingBase
+  COMMAND base_tests
 )

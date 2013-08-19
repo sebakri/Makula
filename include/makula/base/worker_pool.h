@@ -26,7 +26,6 @@
 #include <future>
 #include <vector>
 #include <functional>
-#include "channel.h"
 
 namespace makula {
 namespace base {
@@ -76,7 +75,7 @@ public:
       * \brief get the current worker count
       * \return number of current workers.
       */
-     uint currentWorkerCount() {
+     const uint currentWorkerCount() {
           return workerCounter;
      }
 
@@ -87,12 +86,14 @@ public:
           wait_for_free_slots();
 
           workerCounter++;
+          allWorkerFinished = false;
           auto f = std::async ( std::launch::async, [this] ( Args... args1 ) {
 
                workerFunction ( args1... );
 
                std::lock_guard<std::mutex> lock ( mtx );
                workerCounter--;
+
                maxWorkersReached = false;
                cv.notify_one();
           }, args... );
@@ -104,11 +105,11 @@ public:
      }
 
      /**
-      * wait until all workers finished
+      * \brief wait until all workers finished
       */
      void wait() {
-          for ( auto& f : futures ) {
-               f.wait();
+          while ( workerCounter > 0 ) {
+               std::this_thread::sleep_for(std::chrono::milliseconds(100));
           }
      }
 
@@ -119,8 +120,12 @@ private:
      std::atomic_uint workerCounter;
      std::atomic_uint maxWorkerCount;
      bool maxWorkersReached = false;
+     bool allWorkerFinished = true;
      std::mutex mtx;
      std::condition_variable_any cv;
+     std::mutex mtxFinished;
+     std::condition_variable_any cvFinished;
+     bool isWaiting = false;
 
 
      void wait_for_free_slots() {

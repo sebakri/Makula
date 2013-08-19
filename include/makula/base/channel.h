@@ -24,7 +24,7 @@
 #ifndef CHANNEL_H
 #define CHANNEL_H
 
-#include "makula/base/buffer.h"
+#include <makula/base/buffer.h>
 
 namespace makula {
 namespace base {
@@ -50,8 +50,8 @@ public:
       * \brief default constructor
       */
      Channel ( uint maxElementCount = 1 ) :
-          maxElementCount ( maxElementCount ),
-          buffer ( maxElementCount ) {
+          buffer ( maxElementCount ) ,
+          maxElementCount ( maxElementCount ) {
 
      }
 
@@ -82,34 +82,30 @@ public:
       * \param[out] data variable to store data.
       */
      void operator>> ( MessageType& data ) {
-          data = std::move ( read() );
+          read(data);
      }
 
      /**
       * \brief reading data from channel.
       * \return next data from channel.
       */
-     MessageType read() {
-          MessageType m;
-
-          m = buffer.pop();
-
-          return std::move ( m );
+     const bool read(MessageType& m) {
+          return std::move ( buffer.pop ( m ) );
      }
 
      /**
       * \brief send data over the channel.
       * \param[in] data data to send.
       */
-     void send ( const MessageType& data ) {
-          buffer.push ( data );
+     const bool send ( const MessageType& data ) {
+          return buffer.push ( data );
      }
 
      /**
       * \brief get current element count.
       * \return element count.
       */
-     uint size() {
+     const uint size() {
           return buffer.size();
      }
 
@@ -117,7 +113,7 @@ public:
       * \brief get the capacity of the channel.
       * \return capacity
       */
-     uint capacity() {
+     const uint capacity() {
           return buffer.capacity();
      }
 

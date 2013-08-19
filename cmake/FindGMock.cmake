@@ -13,7 +13,7 @@ find_library( GMOCK_LIBRARY
 )
 
 if(GMOCK_LIBRARY)
-  set(GMOCK_FOUND 1)
+  set(GMOCK_FOUND YES)
   
   set( GMOCK_LIBRARY_DIRS
     ${GMOCK_BINARY_DIR}

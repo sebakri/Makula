@@ -17,20 +17,22 @@ protected:
      virtual int main() {
           std::stringstream s;
           
-          s << "Hi. My thread id is " << std::this_thread::get_id() << ". And yours?";
+          s << "My thread id is " << std::this_thread::get_id() << ". And yours?";
           
           if(!deliver(s.str()))
                return -1;
           else
                return 0;
      }
+     
+     virtual void exit() {}
 };
 
 class ConsumerProcess : public Process, public Consumer<std::string>
 {
 public:
      ConsumerProcess() {}
-     ~ConsumerProcess() {}
+     virtual ~ConsumerProcess() {}
 protected:
      virtual int main()
      {
@@ -40,25 +42,58 @@ protected:
           if(!takeOn(s))
                return -1;
           
-          ss << s << "\nOh Hi...Mine is " << std::this_thread::get_id() << ".";
+          ss << s << "\nMine is " << std::this_thread::get_id() << ".";
           std::cout << ss.str() << std::endl;
           
           return 0;
      }
+     
+     virtual void exit() {}
+};
+
+class PipeProcess : public Process, public Producer<std::string>, public Consumer<std::string>
+{
+public:
+     PipeProcess() {}
+     virtual ~PipeProcess() {}
+protected:
+     virtual int main() {
+          std::string s;
+          std::stringstream ss;
+          
+          if(!takeOn(s))
+               return -1;
+          
+          ss << s << "\nMine is " << std::this_thread::get_id() << ". And yours?";
+          
+          if(!deliver(ss.str()))
+               return -2;
+          else
+               return 0;
+          
+          
+          return 0;
+     }
+     
+     virtual void exit() {}
 };
 
 int main(int argc, char** argv)
 {
      ProducerProcess p;
+     PipeProcess pp;
      ConsumerProcess c;
      
-     ProcessConnecter::connect(p, c);
+     ProcessConnecter::connect(p, pp);
+     ProcessConnecter::connect(pp, c);
      
      p.execute();
+     pp.execute();
      c.execute();
      
-     std::cout << "Producer returned with " << p.wait_until_finished() << std::endl;
-     std::cout << "Consumer returned with " << c.wait_until_finished() << std::endl;
+     p.wait_until_finished();
+     pp.wait_until_finished();
+     c.wait_until_finished();
      
-     return 0;
+     return p.get() + pp.get() + c.get();
 }

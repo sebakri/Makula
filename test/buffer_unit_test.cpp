@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "makula/base/buffer.h"
+#include <makula/base/buffer.h>
 #include <gtest/gtest.h>
 #include <future>
 
@@ -59,15 +59,15 @@ TEST_F ( BufferUnitTest, testThreadSafetyWithMaxCapacity )
 {
      // start a thread, which is reading from buffer.
      auto f2 = std::async ( [this] {
-          for ( int i = 0; i < b->capacity(); i++ ) {
-               int v = b->pop();
+          for ( uint i = 0; i < b->capacity(); i++ ) {
+               int v; b->pop(v);
           }
           return 0;
      } );
 
      // start a thread, which is writing to buffer.
      auto f1 = std::async ( [this] {
-          for ( int i = 0; i < b->capacity(); i++ ) {
+          for ( uint i = 0; i < b->capacity(); i++ ) {
                b->push ( i );
           }
           return 0;
@@ -87,15 +87,15 @@ TEST_F ( BufferUnitTest, testThreadSafetyWithTwentyElements )
 {
      // start thread for reading the buffer.
      auto f2 = std::async ( std::launch::async, [this] {
-          for ( int i = 0; i < 2 * b->capacity(); i++ ) {
-               int v = b->pop();
+          for ( uint i = 0; i < 2 * b->capacity(); i++ ) {
+               int v;b->pop(v);
           }
           return 0;
      } );
 
      // start thread for writing the buffer.
      auto f1 = std::async ( std::launch::async, [this] {
-          for ( int i = 0; i < 2 * b->capacity(); i++ ) {
+          for ( uint i = 0; i < 2 * b->capacity(); i++ ) {
                b->push ( i );
           }
           return 0;

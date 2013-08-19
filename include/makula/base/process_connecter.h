@@ -21,9 +21,10 @@
 #ifndef PROCESSCONNECTER_H
 #define PROCESSCONNECTER_H
 
-#include "makula/base/channel.h"
-#include "makula/base/producer.h"
-#include "makula/base/consumer.h"
+#include <makula/base/channel.h>
+#include <makula/base/producer.h>
+#include <makula/base/consumer.h>
+#include <thread>
 
 namespace makula {
 namespace base {

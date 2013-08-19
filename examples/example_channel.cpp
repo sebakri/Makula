@@ -9,14 +9,16 @@ int main(int argc, char** argv)
      /*
       * Create a new string-channel...
       */
-     Channel<std::string> c;
+     Channel<std::string> c(5);
      
      /*
       * Start a task sending data to the channel...
       */
      auto f1 = std::async(std::launch::async, [&c]
      {
-          c << "Hello";
+          for(int i = 0; i < 10; i++) {
+               c << "Hello";
+          }
      });
      
      /*
@@ -24,18 +26,16 @@ int main(int argc, char** argv)
       */
      auto f2 = std::async(std::launch::async, [&c]
      {
-          std::string s = c.read();
-          s += " Welt!!";
-          c << s;
+          for(int i = 0; i < 10; i++) {
+               std::string s;
+               c >> s;
+               s += " Welt!!";
+               std::cout << s;
+          }
      });
      
      f1.wait();
      f2.wait();
-     
-     /*
-      * Say Hello to the world.
-      */
-     std::cout << c.read();
      
      return 0;
 }
